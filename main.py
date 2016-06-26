@@ -1,10 +1,14 @@
 from flask import Flask, url_for, redirect, session, jsonify, request
 from config import *
 from flask_oauthlib.client import OAuth
+import tldextract
 from urllib2 import Request, urlopen, URLError
 from urllib import urlencode
 from functools import wraps
+from urlparse import urlparse
+from bs4 import BeautifulSoup
 import json
+import urllib
 
 app = Flask(__name__)
 
@@ -13,7 +17,7 @@ app.secret_key = 'secretkey'
 deviantart = oauth.remote_app('deviantart',
                           base_url='https://www.deviantart.com',
                           authorize_url='https://www.deviantart.com/oauth2/authorize',
-                          request_token_params={'scope': 'basic browse user'},
+                          request_token_params={'scope': 'basic browse user stash'},
                           request_token_url=None,
                           access_token_url='https://www.deviantart.com/oauth2/token',
                           access_token_method='POST',
@@ -62,9 +66,33 @@ def get_headers():
     access_token = access_token[0]
     return {'Authorization': 'OAuth '+access_token}
 
-@app.route("/gallery_folder")
+@app.route("/check_url")
+def check_url():
+    address = request.args.get("address")
+    if address == None:
+        return jsonify(is_valid_url=False)
+    address = address.lower()
+    if urlparse(address).scheme != "http":
+        address = "http://" + address
+    domain = tldextract.extract(address).domain + '.' + tldextract.extract(address).suffix
+    if domain != "deviantart.com":
+        return jsonify(is_valid_url=False)
+    urlpath = urlparse(address).path.split('/')
+    validtypes = ["art","favourites","gallery"]
+    if urlpath[1] not in validtypes:
+        return jsonify(is_valid_url=False)
+    contenttype = urlpath[1]
+    meta = BeautifulSoup(urllib.urlopen(address).read(), "html.parser").findAll(attrs={"property":"da:appurl"})[0]['content'].encode('utf-8')
+    path = urlparse(meta).path[1:]
+    if contenttype == "art":
+        return jsonify(is_valid_url=True,type=contenttype,uuid=path)
+    path = path.split('/')
+    return jsonify(is_valid_url=True,type=contenttype,username=path[0],uuid=path[1])
+
+
+@app.route("/fetch_gallery_folder")
 @login_required
-def gallery_folder():
+def fetch_gallery_folder():
     headers = get_headers()
     usr = request.args.get('username')
     fid = request.args.get('folderid')
@@ -83,7 +111,6 @@ def gallery_folder():
             offset = json.loads(response)['next_offset']
             print offset
     return jsonify(name=folderName,gallery_folder=results)
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=5000,debug=True)
