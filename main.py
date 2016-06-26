@@ -1,4 +1,4 @@
-from flask import Flask, url_for, redirect, session, jsonify
+from flask import Flask, url_for, redirect, session, jsonify, request
 from config import *
 from flask_oauthlib.client import OAuth
 from urllib2 import Request, urlopen, URLError
@@ -62,10 +62,12 @@ def get_headers():
     access_token = access_token[0]
     return {'Authorization': 'OAuth '+access_token}
 
-@app.route("/folder/<usr>/<fid>")
+@app.route("/gallery_folder")
 @login_required
-def folder(usr, fid):
+def gallery_folder():
     headers = get_headers()
+    usr = request.args.get('username')
+    fid = request.args.get('folderid')
     results = []
     has_more = True
     offset = 0
@@ -80,7 +82,7 @@ def folder(usr, fid):
             results = results + json.loads(response)['results']
             offset = json.loads(response)['next_offset']
             print offset
-    return jsonify(name=folderName,folder=results)
+    return jsonify(name=folderName,gallery_folder=results)
 
 
 if __name__ == "__main__":
