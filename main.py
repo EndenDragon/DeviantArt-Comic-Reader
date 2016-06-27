@@ -82,6 +82,8 @@ def check_url():
     if urlpath[1] not in validtypes:
         return jsonify(is_valid_url=False)
     contenttype = urlpath[1]
+    if contenttype == "favourites":
+        contenttype = "favorites"
     meta = BeautifulSoup(urllib.urlopen(address).read(), "html.parser").findAll(attrs={"property":"da:appurl"})[0]['content'].encode('utf-8')
     path = urlparse(meta).path[1:]
     if contenttype == "art":
