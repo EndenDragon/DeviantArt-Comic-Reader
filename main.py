@@ -96,12 +96,13 @@ def fetch_gallery():
     headers = get_headers()
     usr = request.args.get('username')
     fid = request.args.get('folderid')
+    mature = request.args.get('mature', False)
     results = []
     has_more = True
     offset = 0
     while has_more:
         parameters = urlencode({'username': usr, 'offset': offset})
-        req = Request('https://www.deviantart.com/api/v1/oauth2/gallery/{}?{}'.format(fid,parameters), None, headers)
+        req = Request('https://www.deviantart.com/api/v1/oauth2/gallery/{}?{}&mature_content={}'.format(fid,parameters,mature), None, headers)
         response = urlopen(req)
         response = response.read()
         has_more = json.loads(response)['has_more']
@@ -128,7 +129,8 @@ def fetch_favorite():
     headers = get_headers()
     uuid = request.args.get('favoriteid')
     usr = request.args.get('username')
-    req = Request('https://www.deviantart.com/api/v1/oauth2/collections/{}?username={}'.format(uuid,usr), None, headers)
+    mature = request.args.get('mature', False)
+    req = Request('https://www.deviantart.com/api/v1/oauth2/collections/{}?username={}&mature_content={}'.format(uuid,usr,mature), None, headers)
     response = urlopen(req)
     response = response.read()
     return jsonify(favorite=json.loads(response))
