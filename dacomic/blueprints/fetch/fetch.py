@@ -1,74 +1,21 @@
-# This file has been deprecated.
-
-from flask import Flask, url_for, redirect, session, jsonify, request
-from config import *
-from flask_oauthlib.client import OAuth
-import tldextract
+from flask import Blueprint, url_for, session, jsonify, request
+from dacomic.decorators import login_required
 from urllib2 import Request, urlopen, URLError
 from urllib import urlencode
-from functools import wraps
 from urlparse import urlparse
 from bs4 import BeautifulSoup
 import json
+import tldextract
 import urllib
 
-app = Flask(__name__)
-
-oauth = OAuth()
-app.secret_key = 'secretkey'
-deviantart = oauth.remote_app('deviantart',
-                          base_url='https://www.deviantart.com',
-                          authorize_url='https://www.deviantart.com/oauth2/authorize',
-                          request_token_params={'scope': 'basic browse user stash'},
-                          request_token_url=None,
-                          access_token_url='https://www.deviantart.com/oauth2/token',
-                          access_token_method='POST',
-
-                          consumer_key=CLIENT_ID,
-                          consumer_secret=CLIENT_SECRET
-                          )
-
-@app.route('/login-initiate')
-def login_initiate():
-    callback=url_for('authorized', _external=True)
-    return deviantart.authorize(callback=callback)
-
-@app.route("/callback")
-@deviantart.authorized_handler
-def authorized(resp):
-    access_token = resp['access_token']
-    session['access_token'] = access_token, ''
-    return access_token
-
-@app.route('/logout')
-def logout():
-    return "Logged out"
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        access_token = session.get('access_token')
-        if access_token is None:
-            return redirect(url_for('logout'))
-        access_token = access_token[0]
-        headers = {'Authorization': 'OAuth '+access_token}
-        req = Request('https://www.deviantart.com/api/v1/oauth2/placebo',
-                  None, headers)
-        try:
-            res = urlopen(req)
-        except URLError, e:
-            if e.code == 401:
-                session.pop('access_token', None)
-                return redirect(url_for('logout'))
-        return f(*args, **kwargs)
-    return decorated_function
+fetch = Blueprint("fetch", __name__, template_folder="../templates")
 
 def get_headers():
     access_token = session.get('access_token')
     access_token = access_token[0]
     return {'Authorization': 'OAuth '+access_token}
 
-@app.route("/check_url")
+@fetch.route("/url")
 def check_url():
     address = request.args.get("address")
     if address == None:
@@ -93,8 +40,7 @@ def check_url():
     path = path.split('/')
     return jsonify(is_valid_url=True,type=contenttype,username=path[0],uuid=path[1])
 
-
-@app.route("/fetch_gallery")
+@fetch.route("/gallery")
 @login_required
 def fetch_gallery():
     headers = get_headers()
@@ -117,7 +63,8 @@ def fetch_gallery():
             print offset
     return jsonify(name=folderName,gallery=results)
 
-@app.route("/fetch_art")
+# TODO: Catch errors if request.args.get is blank
+@fetch.route("/art")
 @login_required
 def fetch_art():
     headers = get_headers()
@@ -127,7 +74,7 @@ def fetch_art():
     response = response.read()
     return jsonify(art=json.loads(response))
 
-@app.route("/fetch_favorite")
+@fetch.route("/favorite")
 @login_required
 def fetch_favorite():
     headers = get_headers()
@@ -138,6 +85,3 @@ def fetch_favorite():
     response = urlopen(req)
     response = response.read()
     return jsonify(favorite=json.loads(response))
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5000,debug=True)
