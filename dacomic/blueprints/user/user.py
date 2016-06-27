@@ -13,9 +13,12 @@ def login_initiate():
 @user.route("/callback")
 @deviantart.authorized_handler
 def authorized(resp):
-    access_token = resp['access_token']
-    session['access_token'] = access_token, ''
-    return access_token
+    try:
+        access_token = resp['access_token']
+        session['access_token'] = access_token, ''
+        return access_token
+    except:
+        return "Error with login"
 
 @user.route('/logout')
 def logout():
