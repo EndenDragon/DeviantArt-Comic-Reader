@@ -90,9 +90,9 @@ def check_url():
     return jsonify(is_valid_url=True,type=contenttype,username=path[0],uuid=path[1])
 
 
-@app.route("/fetch_gallery_folder")
+@app.route("/fetch_gallery")
 @login_required
-def fetch_gallery_folder():
+def fetch_gallery():
     headers = get_headers()
     usr = request.args.get('username')
     fid = request.args.get('folderid')
@@ -110,7 +110,28 @@ def fetch_gallery_folder():
             results = results + json.loads(response)['results']
             offset = json.loads(response)['next_offset']
             print offset
-    return jsonify(name=folderName,gallery_folder=results)
+    return jsonify(name=folderName,gallery=results)
+
+@app.route("/fetch_art")
+@login_required
+def fetch_art():
+    headers = get_headers()
+    uuid = request.args.get('deviationid')
+    req = Request('https://www.deviantart.com/api/v1/oauth2/deviation/{}'.format(uuid), None, headers)
+    response = urlopen(req)
+    response = response.read()
+    return jsonify(art=json.loads(response))
+
+@app.route("/fetch_favorite")
+@login_required
+def fetch_favorite():
+    headers = get_headers()
+    uuid = request.args.get('favoriteid')
+    usr = request.args.get('username')
+    req = Request('https://www.deviantart.com/api/v1/oauth2/collections/{}?username={}'.format(uuid,usr), None, headers)
+    response = urlopen(req)
+    response = response.read()
+    return jsonify(favorite=json.loads(response))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=5000,debug=True)
