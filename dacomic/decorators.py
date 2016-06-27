@@ -20,3 +20,8 @@ def login_required(f):
                 return redirect(url_for('user.logout'))
         return f(*args, **kwargs)
     return decorated_function
+
+def get_headers():
+    access_token = session.get('access_token')
+    access_token = access_token[0]
+    return {'Authorization': 'OAuth '+access_token}

@@ -1,5 +1,7 @@
 from dacomic.oauth import deviantart
-from flask import Blueprint, session, url_for
+from flask import Blueprint, session, url_for, request
+from dacomic.decorators import get_headers
+import requests
 
 user = Blueprint("user", __name__, template_folder="../templates")
 
@@ -17,5 +19,12 @@ def authorized(resp):
 
 @user.route('/logout')
 def logout():
-    session.pop('access_token', None)
-    return "Logged out"
+    revoke = request.args.get('revoke', "false")
+    try:
+        if revoke.lower() in ["true"]:
+            session_token = session.get('access_token')[0]
+            r = requests.post("https://www.deviantart.com/oauth2/revoke", data={'token':session_token})
+        session.pop('access_token', None)
+        return "Logged out"
+    except:
+        return "Error Logging out", 502

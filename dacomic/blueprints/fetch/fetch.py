@@ -1,5 +1,5 @@
 from flask import Blueprint, url_for, session, jsonify, request
-from dacomic.decorators import login_required
+from dacomic.decorators import login_required, get_headers
 from urllib2 import Request, urlopen, URLError
 from urllib import urlencode
 from urlparse import urlparse
@@ -9,11 +9,6 @@ import tldextract
 import urllib
 
 fetch = Blueprint("fetch", __name__, template_folder="../templates")
-
-def get_headers():
-    access_token = session.get('access_token')
-    access_token = access_token[0]
-    return {'Authorization': 'OAuth '+access_token}
 
 @fetch.route("/url")
 def check_url():
