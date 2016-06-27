@@ -80,3 +80,12 @@ def fetch_favorite():
     response = urlopen(req)
     response = response.read()
     return jsonify(favorite=json.loads(response))
+
+@fetch.route("/whoami")
+@login_required
+def fetch_whoami():
+    headers = get_headers()
+    req = Request('https://www.deviantart.com/api/v1/oauth2/user/whoami', None, headers)
+    response = urlopen(req)
+    response = response.read()
+    return jsonify(whoami=json.loads(response))
