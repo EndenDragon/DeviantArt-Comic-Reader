@@ -6,7 +6,7 @@ import requests
 user = Blueprint("user", __name__, template_folder="../templates")
 
 @user.route('/login')
-def login_initiate():
+def login():
     callback=url_for('user.authorized', _external=True)
     return deviantart.authorize(callback=callback)
 

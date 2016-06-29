@@ -11,7 +11,7 @@ import urllib
 fetch = Blueprint("fetch", __name__, template_folder="../templates")
 
 @fetch.route("/url")
-def check_url():
+def url():
     address = request.args.get("address")
     if address == None:
         return jsonify(is_valid_url=False)
@@ -37,7 +37,7 @@ def check_url():
 
 @fetch.route("/gallery")
 @login_required
-def fetch_gallery():
+def gallery():
     headers = get_headers()
     usr = request.args.get('username')
     fid = request.args.get('folderid')
@@ -61,7 +61,7 @@ def fetch_gallery():
 # TODO: Catch errors if request.args.get is blank
 @fetch.route("/art")
 @login_required
-def fetch_art():
+def art():
     headers = get_headers()
     uuid = request.args.get('deviationid')
     req = Request('https://www.deviantart.com/api/v1/oauth2/deviation/{}'.format(uuid), None, headers)
@@ -71,7 +71,7 @@ def fetch_art():
 
 @fetch.route("/favorite")
 @login_required
-def fetch_favorite():
+def favorite():
     headers = get_headers()
     uuid = request.args.get('favoriteid')
     usr = request.args.get('username')
@@ -83,7 +83,7 @@ def fetch_favorite():
 
 @fetch.route("/whoami")
 @login_required
-def fetch_whoami():
+def whoami():
     headers = get_headers()
     req = Request('https://www.deviantart.com/api/v1/oauth2/user/whoami', None, headers)
     response = urlopen(req)
