@@ -1,12 +1,10 @@
 from flask import Blueprint, url_for, session, jsonify, request
 from comicreader.decorators import login_required, get_headers
-from urllib2 import Request, urlopen, URLError
-from urllib import urlencode
 from urlparse import urlparse
 from bs4 import BeautifulSoup
 import json
 import tldextract
-import urllib
+import requests
 
 fetch = Blueprint("fetch", __name__, template_folder="../templates")
 
@@ -28,7 +26,7 @@ def url():
     contenttype = urlpath[1]
     if contenttype == "favourites":
         contenttype = "favorites"
-    meta = BeautifulSoup(urllib.urlopen(address).read(), "html.parser").findAll(attrs={"property":"da:appurl"})[0]['content'].encode('utf-8')
+    meta = BeautifulSoup(requests.get(address).content, "html.parser").findAll(attrs={"property":"da:appurl"})[0]['content'].encode('utf-8')
     path = urlparse(meta).path[1:]
     if contenttype == "art":
         return jsonify(is_valid_url=True,type=contenttype,uuid=path)
@@ -46,10 +44,9 @@ def gallery():
     has_more = True
     offset = 0
     while has_more:
-        parameters = urlencode({'username': usr, 'offset': offset})
-        req = Request('https://www.deviantart.com/api/v1/oauth2/gallery/{}?{}&mature_content={}'.format(fid,parameters,mature), None, headers)
-        response = urlopen(req)
-        response = response.read()
+        parameters = {'username': usr, 'offset': offset, 'mature_content': mature}
+        req = requests.get('https://www.deviantart.com/api/v1/oauth2/gallery/{}'.format(fid), params=parameters, headers=headers)
+        response = req.content
         has_more = json.loads(response)['has_more']
         if has_more:
             folderName = json.loads(response)['name']
@@ -64,9 +61,8 @@ def gallery():
 def art():
     headers = get_headers()
     uuid = request.args.get('deviationid')
-    req = Request('https://www.deviantart.com/api/v1/oauth2/deviation/{}'.format(uuid), None, headers)
-    response = urlopen(req)
-    response = response.read()
+    req = requests.get('https://www.deviantart.com/api/v1/oauth2/deviation/{}'.format(uuid), headers=headers)
+    response = req.content
     return jsonify(art=json.loads(response))
 
 @fetch.route("/favorite")
@@ -76,16 +72,15 @@ def favorite():
     uuid = request.args.get('favoriteid')
     usr = request.args.get('username')
     mature = request.args.get('mature', False)
-    req = Request('https://www.deviantart.com/api/v1/oauth2/collections/{}?username={}&mature_content={}'.format(uuid,usr,mature), None, headers)
-    response = urlopen(req)
-    response = response.read()
+    parameters = {'username': usr, 'mature_content': mature}
+    req = requests.get('https://www.deviantart.com/api/v1/oauth2/collections/{}'.format(uuid),params=parameters, headers=headers)
+    response = req.content
     return jsonify(favorite=json.loads(response))
 
 @fetch.route("/whoami")
 @login_required
 def whoami():
     headers = get_headers()
-    req = Request('https://www.deviantart.com/api/v1/oauth2/user/whoami', None, headers)
-    response = urlopen(req)
-    response = response.read()
+    req = requests.get('https://www.deviantart.com/api/v1/oauth2/user/whoami', headers=headers)
+    response = req.content
     return jsonify(whoami=json.loads(response))
