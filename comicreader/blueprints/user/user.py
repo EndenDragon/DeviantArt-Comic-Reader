@@ -1,6 +1,6 @@
-from dacomic.oauth import deviantart
+from comicreader.oauth import deviantart
 from flask import Blueprint, session, url_for, request
-from dacomic.decorators import get_headers
+from comicreader.decorators import get_headers
 import requests
 
 user = Blueprint("user", __name__, template_folder="../templates")

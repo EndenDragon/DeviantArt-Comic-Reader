@@ -1,5 +1,5 @@
 from flask import Blueprint, url_for, session, jsonify, request
-from dacomic.decorators import login_required, get_headers
+from comicreader.decorators import login_required, get_headers
 from urllib2 import Request, urlopen, URLError
 from urllib import urlencode
 from urlparse import urlparse
