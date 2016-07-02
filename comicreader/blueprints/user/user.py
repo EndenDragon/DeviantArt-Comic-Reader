@@ -1,5 +1,5 @@
 from comicreader.oauth import deviantart
-from flask import Blueprint, session, url_for, request
+from flask import Blueprint, session, url_for, request, redirect
 from comicreader.decorators import get_headers
 import requests
 
@@ -11,23 +11,30 @@ def login():
     return deviantart.authorize(callback=callback)
 
 @user.route("/callback")
-@deviantart.authorized_handler
-def authorized(resp):
+def authorized():
     try:
+        resp = deviantart.authorized_response()
         access_token = resp['access_token']
         session['access_token'] = access_token, ''
-        return access_token
+        return redirect(url_for('index'))
     except:
-        return "Error with login"
+        return redirect(url_for('user.logout', reason="Invalid Session Token"))
 
 @user.route('/logout')
 def logout():
     revoke = request.args.get('revoke', "false")
-    try:
-        if revoke.lower() in ["true"]:
+    reason = request.args.get('reason', None)
+    if revoke.lower() in ["true"]:
+        try:
+            reason = "DeviantArt Comic Reader application has been revoked from the user account"
             session_token = session.get('access_token')[0]
             r = requests.post("https://www.deviantart.com/oauth2/revoke", data={'token':session_token})
+        except:
+            reason = "Error revoking DeviantArt Comic Reader application from user account"
+    try:
         session.pop('access_token', None)
-        return "Logged out"
     except:
-        return "Error Logging out", 502
+        pass
+    if reason is not None:
+        return "Logged out: " + reason
+    return "Logged out"

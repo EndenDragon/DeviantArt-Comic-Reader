@@ -40,6 +40,8 @@ def gallery():
     usr = request.args.get('username')
     fid = request.args.get('folderid')
     mature = request.args.get('mature', False)
+    if usr and fid is None:
+        return jsonify(error=True)
     results = []
     has_more = True
     offset = 0
@@ -53,17 +55,18 @@ def gallery():
             results = results + json.loads(response)['results']
             offset = json.loads(response)['next_offset']
             print offset
-    return jsonify(name=folderName,gallery=results)
+    return jsonify(error=False,name=folderName,gallery=results)
 
-# TODO: Catch errors if request.args.get is blank
 @fetch.route("/art")
 @login_required
 def art():
     headers = get_headers()
     uuid = request.args.get('deviationid')
+    if uuid is None:
+        return jsonify(error=True)
     req = requests.get('https://www.deviantart.com/api/v1/oauth2/deviation/{}'.format(uuid), headers=headers)
     response = req.content
-    return jsonify(art=json.loads(response))
+    return jsonify(error=False,art=json.loads(response))
 
 @fetch.route("/favorite")
 @login_required
@@ -72,10 +75,12 @@ def favorite():
     uuid = request.args.get('favoriteid')
     usr = request.args.get('username')
     mature = request.args.get('mature', False)
+    if uuid and usr is None:
+        return jsonify(error=True)
     parameters = {'username': usr, 'mature_content': mature}
     req = requests.get('https://www.deviantart.com/api/v1/oauth2/collections/{}'.format(uuid),params=parameters, headers=headers)
     response = req.content
-    return jsonify(favorite=json.loads(response))
+    return jsonify(error=False,favorite=json.loads(response))
 
 @fetch.route("/whoami")
 @login_required

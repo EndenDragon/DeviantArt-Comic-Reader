@@ -13,12 +13,14 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         access_token = session.get('access_token')
         if access_token is None:
-            return redirect(url_for('user.logout'))
+            return redirect(url_for('user.login'))
         access_token = access_token[0]
         headers = get_headers()
-        req = requests.get('https://www.deviantart.com/api/v1/oauth2/placebo', headers=headers)
+        try:
+            req = requests.get('https://www.deviantart.com/api/v1/oauth2/placebo', headers=headers)
+        except:
+            return redirect(url_for('user.logout', reason="Unfortunally, DeviantArt is down or returned an invalid message. Therefore, we cannot continue. Sorry about that!"))
         if req.status_code == 401:
-            session.pop('access_token', None)
-            return redirect(url_for('user.logout'))
+            return redirect(url_for('user.logout', reason="Access denined to DeviantArt API"))
         return f(*args, **kwargs)
     return decorated_function

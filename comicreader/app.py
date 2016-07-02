@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from config import config
 import os
 import blueprints.fetch
@@ -10,3 +10,15 @@ app.secret_key = config['SECRET_KEY']
 
 app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch")
 app.register_blueprint(blueprints.user.user, url_prefix="/user")
+
+@app.route("/logout")
+def logout():
+    return redirect(url_for('user.logout'))
+
+@app.route("/login")
+def login():
+    return redirect(url_for('user.login'))
+
+@app.route("/")
+def index():
+    return "Homepage"
