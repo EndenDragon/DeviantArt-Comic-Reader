@@ -1,12 +1,12 @@
 from functools import wraps
 from flask import url_for, redirect, session
-from config import *
+from config import config
 import requests
 
 def get_headers():
     access_token = session.get('access_token')
     access_token = access_token[0]
-    return {'Authorization': 'OAuth '+access_token, 'user-agent': USER_AGENT}
+    return {'Authorization': 'OAuth '+access_token, 'user-agent': config['USER_AGENT']}
 
 def login_required(f):
     @wraps(f)
