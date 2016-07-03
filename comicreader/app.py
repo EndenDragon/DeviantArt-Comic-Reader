@@ -8,7 +8,7 @@ import os
 os.chdir(config['APP_LOCATION'])
 app = Flask(__name__, static_folder="../static")
 app.config['SQLALCHEMY_DATABASE_URI'] = config['DATABASE_URI']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.secret_key = config['SECRET_KEY']
 
 db.init_app(app)
