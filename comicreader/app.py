@@ -6,6 +6,7 @@ import blueprints.user
 
 os.chdir(config['APP_LOCATION'])
 app = Flask(__name__, static_folder="../static")
+app.config['SQLALCHEMY_DATABASE_URI'] = config['DATABASE_URI']
 app.secret_key = config['SECRET_KEY']
 
 app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch")

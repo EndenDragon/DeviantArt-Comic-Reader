@@ -12,4 +12,7 @@ config = {
 
     # User Agent used to communicate to the WAN
     'USER_AGENT': "Deviant-Art-Comic-Reader",
+
+    # Database Address
+    'DATABASE_URI': "driver://username:password@host:port/database",
 }
