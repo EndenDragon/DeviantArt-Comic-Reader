@@ -34,7 +34,7 @@ def url():
     return jsonify(is_valid_url=True,type=contenttype,username=path[0],uuid=path[1])
 
 @fetch.route("/gallery")
-@login_required
+@login_required(api=True)
 def gallery():
     headers = get_headers()
     usr = request.args.get('username')
