@@ -6,9 +6,9 @@ import json
 import tldextract
 import requests
 
-fetch = Blueprint("fetch", __name__, template_folder="../templates")
+apifetch = Blueprint("fetch", __name__, template_folder="../templates")
 
-@fetch.route("/url")
+@apifetch.route("/url")
 def url():
     address = request.args.get("address")
     if address == None:
@@ -33,7 +33,7 @@ def url():
     path = path.split('/')
     return jsonify(is_valid_url=True,type=contenttype,username=path[0],uuid=path[1])
 
-@fetch.route("/gallery")
+@apifetch.route("/gallery")
 @login_required(api=True)
 def gallery():
     headers = get_headers()
@@ -57,7 +57,7 @@ def gallery():
             print offset
     return jsonify(error=False,name=folderName,gallery=results)
 
-@fetch.route("/art")
+@apifetch.route("/art")
 @login_required
 def art():
     headers = get_headers()
@@ -68,7 +68,7 @@ def art():
     response = req.content
     return jsonify(error=False,art=json.loads(response))
 
-@fetch.route("/favorite")
+@apifetch.route("/favorite")
 @login_required
 def favorite():
     headers = get_headers()
@@ -82,7 +82,7 @@ def favorite():
     response = req.content
     return jsonify(error=False,favorite=json.loads(response))
 
-@fetch.route("/whoami")
+@apifetch.route("/whoami")
 @login_required
 def whoami():
     headers = get_headers()
