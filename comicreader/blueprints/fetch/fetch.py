@@ -58,7 +58,7 @@ def gallery():
     return jsonify(error=False,name=folderName,gallery=results)
 
 @fetch.route("/art")
-@login_required
+@login_required(api=True)
 def art():
     headers = get_headers()
     uuid = request.args.get('deviationid')
@@ -69,7 +69,7 @@ def art():
     return jsonify(error=False,art=json.loads(response))
 
 @fetch.route("/favorite")
-@login_required
+@login_required(api=True)
 def favorite():
     headers = get_headers()
     uuid = request.args.get('favoriteid')
@@ -83,7 +83,7 @@ def favorite():
     return jsonify(error=False,favorite=json.loads(response))
 
 @fetch.route("/whoami")
-@login_required
+@login_required()
 def whoami():
     headers = get_headers()
     req = requests.get('https://www.deviantart.com/api/v1/oauth2/user/whoami', headers=headers)
