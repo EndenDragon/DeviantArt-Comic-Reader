@@ -13,7 +13,7 @@ app.secret_key = config['SECRET_KEY']
 
 db.init_app(app)
 
-app.register_blueprint(blueprints.fetch.apifetch, url_prefix="/fetch")
+app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch")
 app.register_blueprint(blueprints.user.user, url_prefix="/user")
 
 @app.route("/logout")

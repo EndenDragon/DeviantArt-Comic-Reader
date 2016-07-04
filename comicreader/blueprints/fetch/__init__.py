@@ -1,1 +1,1 @@
-from fetch import apifetch
+from fetch import fetch
