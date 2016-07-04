@@ -83,7 +83,7 @@ def favorite():
     return jsonify(error=False,favorite=json.loads(response))
 
 @fetch.route("/whoami")
-@login_required()
+@login_required(api=True)
 def whoami():
     headers = get_headers()
     req = requests.get('https://www.deviantart.com/api/v1/oauth2/user/whoami', headers=headers)
