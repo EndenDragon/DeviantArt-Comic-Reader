@@ -55,6 +55,10 @@ def gallery():
             results = results + json.loads(response)['results']
             offset = json.loads(response)['next_offset']
             print offset
+    try:
+      folderName
+    except NameError:
+      folderName = None
     return jsonify(error=False,name=folderName,gallery=results)
 
 @fetch.route("/art")
