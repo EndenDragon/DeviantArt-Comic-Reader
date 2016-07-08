@@ -9,4 +9,3 @@ class User(db.Model):
     moderatorbool = db.Column(db.Boolean())       # Moderator status boolean
     title = db.Column(db.String(255))             # User title (eg: Developer)
     banned = db.Column(db.String(255))            # Ban message. NULL means not banned.
-    logintimestamps = db.Column(db.Text())        # JS List of login attempts (eg: 127.0.0.1;TIMESTAMP,etc etc)
