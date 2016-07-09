@@ -4,12 +4,16 @@ import blueprints.fetch
 import blueprints.user
 from database import db
 import os
+import time
 
 os.chdir(config['APP_LOCATION'])
 app = Flask(__name__, static_folder="../static")
 app.config['SQLALCHEMY_DATABASE_URI'] = config['DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.secret_key = config['SECRET_KEY']
+
+os.environ['TZ'] = 'UTC' # Sets the whole app to handle UTC instead of the server time
+time.tzset()
 
 db.init_app(app)
 
