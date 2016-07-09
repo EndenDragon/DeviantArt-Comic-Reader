@@ -1,9 +1,30 @@
 from comicreader.oauth import deviantart
 from flask import Blueprint, session, url_for, request, redirect
 from comicreader.decorators import get_headers
+from comicreader.database import db, User
+import json
 import requests
 
 user = Blueprint("user", __name__, template_folder="../templates")
+
+def checkUser():
+    headers = get_headers()
+    req = requests.get('https://www.deviantart.com/api/v1/oauth2/user/whoami', headers=headers)
+    response = req.content
+    response =  json.loads(response)
+    usrquery = User.query.filter_by(useruuid=response['userid']).first()
+    if usrquery is None:
+        user = User(response['userid'], response['usericon'], response['username'])
+        db.session.add(user)
+        db.session.commit()
+    else:
+        if usrquery.usericon != response['usericon'] or usrquery.username != response['username']:
+            if usrquery.usericon != response['usericon']:
+                usrquery.usericon = response['usericon']
+            if usrquery.username != response['username']:
+                usrquery.username = response['username']
+            db.session.commit()
+
 
 @user.route('/login')
 def login():
@@ -16,9 +37,10 @@ def authorized():
         resp = deviantart.authorized_response()
         access_token = resp['access_token']
         session['access_token'] = access_token, ''
-        return redirect(url_for('index'))
     except:
         return redirect(url_for('user.logout', reason="Invalid Session Token"))
+    checkUser()
+    return redirect(url_for('index'))
 
 @user.route('/logout')
 def logout():
