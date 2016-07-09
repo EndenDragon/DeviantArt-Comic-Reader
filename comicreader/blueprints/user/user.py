@@ -1,9 +1,11 @@
 from comicreader.oauth import deviantart
 from flask import Blueprint, session, url_for, request, redirect
 from comicreader.decorators import get_headers
-from comicreader.database import db, User
+from comicreader.database import db, User, Login
 import json
 import requests
+import time
+import datetime
 
 user = Blueprint("user", __name__, template_folder="../templates")
 
@@ -17,6 +19,7 @@ def checkUser():
         user = User(response['userid'], response['usericon'], response['username'])
         db.session.add(user)
         db.session.commit()
+        usrquery = User.query.filter_by(useruuid=response['userid']).first()
     else:
         if usrquery.usericon != response['usericon'] or usrquery.username != response['username']:
             if usrquery.usericon != response['usericon']:
@@ -24,6 +27,16 @@ def checkUser():
             if usrquery.username != response['username']:
                 usrquery.username = response['username']
             db.session.commit()
+    session['userid'] = response['userid']
+    timestamp = time.time()
+    timestamp = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+    try:
+        ipaddress = request.headers['X-Real-IP'] # Pythonanywhere hack
+    except:
+        ipaddress = request.remote_addr
+    login = Login(usrquery.id, response['username'], ipaddress, timestamp)
+    db.session.add(login)
+    db.session.commit()
 
 
 @user.route('/login')
@@ -54,7 +67,7 @@ def logout():
         except:
             reason = "Error revoking DeviantArt Comic Reader application from user account"
     try:
-        session.pop('access_token', None)
+        session.clear()
     except:
         pass
     if reason is not None:
