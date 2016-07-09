@@ -14,7 +14,11 @@ def login_required(api=False):
         def decorated_function(*args, **kwargs):
             access_token = session.get('access_token')
             if access_token is None:
-                return redirect(url_for('user.login'))
+                if api:
+                    msg = "Invalid access token"
+                    return jsonify(error=True, message=msg)
+                else:
+                    return redirect(url_for('user.login'))
             access_token = access_token[0]
             headers = get_headers()
             try:
