@@ -1,7 +1,7 @@
 from comicreader.oauth import deviantart
 from flask import Blueprint, session, url_for, request, redirect
 from comicreader.decorators import get_headers
-from comicreader.database import db, User, Login
+from comicreader.database import db, User, LoginTimestamp
 import json
 import requests
 import time
@@ -34,7 +34,7 @@ def checkUser():
         ipaddress = request.headers['X-Real-IP'] # Pythonanywhere hack
     except:
         ipaddress = request.remote_addr
-    login = Login(usrquery.id, response['username'], ipaddress, timestamp)
+    login = LoginTimestamp(usrquery.id, response['username'], ipaddress, timestamp)
     db.session.add(login)
     db.session.commit()
 

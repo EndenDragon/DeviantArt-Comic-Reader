@@ -1,6 +1,6 @@
 from comicreader.database import db
 
-class Login(db.Model):
+class LoginTimestamp(db.Model):
     __tablename__ = "logins"
     id = db.Column(db.Integer, primary_key=True)  # auto inc id
     userid = db.Column(db.Integer)                # User ID
