@@ -1,0 +1,99 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+.side-nav {
+    margin-top:64px; /* Change according to your nav height */
+}
+header, main, footer {
+  padding-left: 240px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+.side-nav.fixed a {
+  color: #a7ffeb;
+}
+body {
+  color: #a7ffeb;
+  background-color: #004d40 !important;
+}
+.collapsible-body {
+  background-color: #00796b !important;
+}
+.menu-user {
+  color: #e0f2f1;
+  background-color: #00897b;
+  font-weight: 600;
+}
+.menu-user img {
+  width: 50px;
+  vertical-align: middle;
+}
+.brand-logo {
+  font-family: 'Bangers', cursive;
+}
+@media only screen and (max-width : 600px) {
+  .brand-logo {
+    font-size: 1.3em !important;
+  }
+}
+nav {
+  background-color: #00796b !important;
+}
+.side-nav {
+  background-color: #00695c !important;
+}
+.page-footer {
+  background-color: #00897b !important;
+}
+.search {
+  height: 56px !important;
+}
+@media only screen and (min-width: 601px) {
+  .search {
+    height: 64px !important;
+  }
+}
+h1 {
+  font-family: 'Bangers', cursive;
+}
+h2 {
+  font-family: 'Bangers', cursive;
+}
+.card-title {
+  font-family: 'Bangers', cursive;
+  font-size: 35px !important;
+}
+.side-nav li.active {
+  background-color: rgba(0, 0, 0, 0.21);
+}
+.card {
+  background-color: #00897b !important;
+}
+a {
+  color: #64ffda;
+}
+.deviant-preview {
+  height: 200px;
+  overflow: hidden;
+}
+.deviant-preview::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255, 255, 255, .15)), to(rgba(0, 0, 0, .25))), -webkit-gradient(linear, left top, right bottom, color-stop(0, rgba(255, 255, 255, 0)), color-stop(0.5, rgba(255, 255, 255, .1)), color-stop(0.501, rgba(255, 255, 255, 0)), color-stop(1, rgba(255, 255, 255, 0)));
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, .15), rgba(0, 0, 0, .25)), -moz-linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+    background: linear-gradient(top, rgba(255, 255, 255, .15), rgba(0, 0, 0, .25)), linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+}

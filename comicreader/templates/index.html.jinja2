@@ -1,0 +1,74 @@
+{% extends "layout.html.jinja2" %}
+{% block title %}Browse Comic Series{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col s12 m11 l9">
+    <h1>Create a Comic Reader!</h1>
+    <p class="flow-text">Start by entering a DeviantArt Favorite, Gallery, or Art URL address.</p>
+    <nav>
+      <div class="nav-wrapper z-depth-2">
+        <form action="/" method="GET">
+          <div class="input-field">
+            <input id="search-deviantart" type="search" class="search" name="url" placeholder="http://www.deviantart.com/" autocomplete="off">
+            <label for="search-deviantart"><i class="mdi mdi-deviantart"></i></label>
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col s12">
+    <br>
+    <h2>Featured Readers</h2>
+    <div class="col s12 m6 l3">
+      <div class="card hoverable">
+        <div class="card-image waves-effect waves-block waves-light">
+          <div class="deviant-preview">
+            <img src="http://orig11.deviantart.net/f43c/f/2013/349/c/c/es__seeds_of_darkness_000___prologue_by_estories-d6s9mp5.png">
+          </div>
+        </div>
+        <div class="card-content">
+          <span class="card-title">Card Title</span>
+          <span class="right">
+            <i class="fa fa-thumbs-up" aria-hidden="true"></i> 10<br>
+            <i class="fa fa-thumbs-down" aria-hidden="true"></i> 10<br>
+            <i class="fa fa-star" aria-hidden="true"></i> 10
+          </span>
+          <p>By <a href="#">EndenDragon</a></p>
+          <p class="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet augue lectus. Fusce malesuada massa arcu, non eleme</p>
+        </div>
+        <div class="card-action">
+          <a class="waves-effect waves-light btn teal accent-4">Read</a>
+          <a class="waves-effect waves-light btn">Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col s12">
+    <br>
+    <h2>Last Updated</h2>
+    <div class="col s12 m6 l3">
+      <div class="card hoverable">
+        <div class="card-image waves-effect waves-block waves-light">
+          <div class="deviant-preview">
+            <img src="http://orig11.deviantart.net/f43c/f/2013/349/c/c/es__seeds_of_darkness_000___prologue_by_estories-d6s9mp5.png">
+          </div>
+        </div>
+        <div class="card-content">
+          <span class="card-title">Card Title</span>
+          <span class="right">
+            <i class="fa fa-thumbs-up" aria-hidden="true"></i> 10<br>
+            <i class="fa fa-thumbs-down" aria-hidden="true"></i> 10<br>
+            <i class="fa fa-star" aria-hidden="true"></i> 10
+          </span>
+          <p>By <a href="#">EndenDragon</a></p>
+          <p class="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet augue lectus. Fusce malesuada massa arcu, non eleme</p>
+        </div>
+        <div class="card-action">
+          <a class="waves-effect waves-light btn teal accent-4">Read</a>
+          <a class="waves-effect waves-light btn">Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

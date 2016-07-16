@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='vendor/css/materialdesignicons.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}{% endblock %} - DeviantArt Comic Reader</title>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav-wrapper"><a href="#" class="brand-logo">DeviantArt Comic Reader</a></div>
+      </div>
+      <ul class="right">
+        <li><a href="#!" class="hide-on-med-and-down waves-effect">Create</a></li>
+        <li><a class="dropdown-button waves-effect waves-light menu-user z-depth-1" href="#!" data-activates="userdropdown">
+          <span class="hide-on-med-and-down">EndenDragon&nbsp;&nbsp;&nbsp;</span><img src="{{ url_for('static', filename='img/enden.png') }}" alt="usericon" class="circle z-depth-1"></a></li>
+      </ul>
+      <ul id='userdropdown' class='dropdown-content'>
+        <li><a href="#!">Your Readers</a></li>
+        <li><a href="#!">Settings</a></li>
+        <li><a href="#!">Logout</a></li>
+      </ul>
+      <a href="#" data-activates="slide-out" class="button-collapse show-on-med-and-up"><i class="material-icons">menu</i></a>
+       <ul id="slide-out" class="side-nav fixed">
+          <li>
+            <div class="nav-wrapper">
+              <form>
+                <div class="input-field z-depth-1">
+                  <input id="search" class="search" type="search" placeholder="Search Readers">
+                  <label for="search"><i class="material-icons">search</i></label>
+                  <i class="material-icons">close</i>
+                </div>
+              </form>
+            </div>
+          </li>
+          <li class="active"><a class="waves-effect" href="#!"><i class="fa fa-folder-open fa-lg" aria-hidden="true"></i> Browse</a></li>
+          <li><a class="waves-effect" href="#!"><i class="fa fa-star fa-lg" aria-hidden="true"></i> Favorites</a></li>
+          <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+              <li>
+                <a class="collapsible-header waves-effect"><i class="fa fa-flag fa-lg" aria-hidden="true"></i> Moderator</a>
+                <div class="collapsible-body">
+                  <ul>
+                    <li><a href="#!">View Reports</a></li>
+                    <li><a href="#!">Remove/Restore</a></li>
+                    <li><a href="#!">Update Featured</a></li>
+                    <li><a href="#!">Modify Users</a></li>
+                    <li><a href="#!">Moderator Logs</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+    </nav>
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="page-footer">
+      <div class="center-align hide-on-med-and-up" style="font-size: 10px;">
+        © 2016 DeviantArt Comic Reader - Made with <i class="fa fa-heart" aria-hidden="true"></i> by EndenDragon <br>
+        <a class="grey-text text-lighten-4" href="#!">Revision 1234 - Terms of Service</a>
+      </div>
+      <div class="footer-copyright hide-on-small-only">
+        <div class="container center-align">
+          © 2016 DeviantArt Comic Reader - Made with <i class="fa fa-heart" aria-hidden="true"></i> by EndenDragon - Revision 1234
+          <a class="grey-text text-lighten-4 right" href="#!">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+    <script>
+      $(".button-collapse").sideNav();
+      $(document).ready(function() {
+          $(window).scroll(function() {
+              /* Hack to make the sidebar scroll with the page */
+              var scrollTop = $(window).scrollTop();
+              var sidenav = $("#slide-out");
+              if (scrollTop != 0) {
+                if (scrollTop > 0 && scrollTop < 64) {
+                  var scrollMargin = 64 - scrollTop;
+                  sidenav.css({"margin-top": scrollMargin.toString() + "px"});
+                } else {
+                  sidenav.css({"margin-top": "0px"});
+                }
+              } else {
+                  sidenav.css({"margin-top": ""});
+              }
+          });
+      });
+    </script>
+  </body>
+</html>

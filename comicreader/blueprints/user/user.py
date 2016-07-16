@@ -1,5 +1,5 @@
 from comicreader.oauth import deviantart
-from flask import Blueprint, session, url_for, request, redirect
+from flask import Blueprint, session, url_for, request, redirect, render_template
 from comicreader.decorators import get_headers
 from comicreader.database import db, User, LoginTimestamp
 import json
@@ -7,7 +7,7 @@ import requests
 import time
 import datetime
 
-user = Blueprint("user", __name__, template_folder="../templates")
+user = Blueprint("user", __name__, template_folder="../../templates")
 
 def checkUser():
     headers = get_headers()

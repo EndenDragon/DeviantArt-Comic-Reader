@@ -6,7 +6,7 @@ import json
 import tldextract
 import requests
 
-fetch = Blueprint("fetch", __name__, template_folder="../templates")
+fetch = Blueprint("fetch", __name__, template_folder="../../templates")
 
 @fetch.route("/url")
 def url():

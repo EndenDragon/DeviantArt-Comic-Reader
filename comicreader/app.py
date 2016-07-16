@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 from config import config
 import blueprints.fetch
 import blueprints.user
@@ -7,7 +7,7 @@ import os
 import time
 
 os.chdir(config['APP_LOCATION'])
-app = Flask(__name__, static_folder="../static")
+app = Flask(__name__, static_folder="static")
 app.config['SQLALCHEMY_DATABASE_URI'] = config['DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.secret_key = config['SECRET_KEY']
@@ -17,8 +17,10 @@ time.tzset()
 
 db.init_app(app)
 
-app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch")
-app.register_blueprint(blueprints.user.user, url_prefix="/user")
+app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch", template_folder="/templates")
+app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
+
+app.add_url_rule('/robots.txt', None, app.send_static_file, defaults={'filename': 'txt/robots.txt'})
 
 @app.route("/logout")
 def logout():
@@ -30,4 +32,4 @@ def login():
 
 @app.route("/")
 def index():
-    return "Homepage"
+    return render_template("index.html.jinja2")
