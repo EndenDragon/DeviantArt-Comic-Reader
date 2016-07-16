@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    <link href="static/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Browse Comic Series - DeviantArt Comic Reader</title>
+    <style>
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      main {
+        flex: 1 0 auto;
+      }
+      .side-nav {
+          margin-top:64px; /* Change according to your nav height */
+      }
+      header, main, footer {
+        padding-left: 240px;
+      }
+
+      @media only screen and (max-width : 992px) {
+        header, main, footer {
+          padding-left: 0;
+        }
+      }
+      .side-nav.fixed a {
+        color: #a7ffeb;
+      }
+      body {
+        color: #a7ffeb;
+        background-color: #004d40 !important;
+      }
+      .collapsible-body {
+        background-color: #00796b !important;
+      }
+      .menu-user {
+        color: #e0f2f1;
+        background-color: #00897b;
+        font-weight: 600;
+      }
+      .menu-user img {
+        width: 50px;
+        vertical-align: middle;
+      }
+      .brand-logo {
+        font-family: 'Bangers', cursive;
+      }
+      @media only screen and (max-width : 600px) {
+        .brand-logo {
+          font-size: 1.3em !important;
+        }
+      }
+      nav {
+        background-color: #00796b !important;
+      }
+      .side-nav {
+        background-color: #00695c !important;
+      }
+      .page-footer {
+        background-color: #00897b !important;
+      }
+      .search {
+        height: 56px !important;
+      }
+      @media only screen and (min-width: 601px) {
+        .search {
+          height: 64px !important;
+        }
+      }
+      h1 {
+        font-family: 'Bangers', cursive;
+      }
+      h2 {
+        font-family: 'Bangers', cursive;
+      }
+      .card-title {
+        font-family: 'Bangers', cursive;
+        font-size: 35px !important;
+      }
+      .side-nav li.active {
+        background-color: rgba(0, 0, 0, 0.21);
+      }
+      .card {
+        background-color: #00897b !important;
+      }
+      a {
+        color: #64ffda;
+      }
+      .deviant-preview {
+        height: 200px;
+        overflow: hidden;
+      }
+      .deviant-preview::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255, 255, 255, .15)), to(rgba(0, 0, 0, .25))), -webkit-gradient(linear, left top, right bottom, color-stop(0, rgba(255, 255, 255, 0)), color-stop(0.5, rgba(255, 255, 255, .1)), color-stop(0.501, rgba(255, 255, 255, 0)), color-stop(1, rgba(255, 255, 255, 0)));
+          background: -moz-linear-gradient(top, rgba(255, 255, 255, .15), rgba(0, 0, 0, .25)), -moz-linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+          background: linear-gradient(top, rgba(255, 255, 255, .15), rgba(0, 0, 0, .25)), linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav-wrapper"><a href="#" class="brand-logo">DeviantArt Comic Reader</a></div>
+      </div>
+      <ul class="right">
+        <li><a href="#!" class="hide-on-med-and-down waves-effect">Create</a></li>
+        <li><a class="dropdown-button waves-effect waves-light menu-user z-depth-1" href="#!" data-activates="userdropdown">
+          <span class="hide-on-med-and-down">EndenDragon&nbsp;&nbsp;&nbsp;</span><img src="static/enden.png" alt="usericon" class="circle z-depth-1"></a></li>
+      </ul>
+      <ul id='userdropdown' class='dropdown-content'>
+        <li><a href="#!">Your Readers</a></li>
+        <li><a href="#!">Settings</a></li>
+        <li><a href="#!">Logout</a></li>
+      </ul>
+      <a href="#" data-activates="slide-out" class="button-collapse show-on-med-and-up"><i class="material-icons">menu</i></a>
+       <ul id="slide-out" class="side-nav fixed">
+          <li>
+            <div class="nav-wrapper">
+              <form>
+                <div class="input-field z-depth-1">
+                  <input id="search" class="search" type="search" placeholder="Search Readers">
+                  <label for="search"><i class="material-icons">search</i></label>
+                  <i class="material-icons">close</i>
+                </div>
+              </form>
+            </div>
+          </li>
+          <li class="active"><a class="waves-effect" href="#!"><i class="fa fa-folder-open fa-lg" aria-hidden="true"></i> Browse</a></li>
+          <li><a class="waves-effect" href="#!"><i class="fa fa-star fa-lg" aria-hidden="true"></i> Favorites</a></li>
+          <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+              <li>
+                <a class="collapsible-header waves-effect"><i class="fa fa-flag fa-lg" aria-hidden="true"></i> Moderator</a>
+                <div class="collapsible-body">
+                  <ul>
+                    <li><a href="#!">View Reports</a></li>
+                    <li><a href="#!">Remove/Restore</a></li>
+                    <li><a href="#!">Update Featured</a></li>
+                    <li><a href="#!">Modify Users</a></li>
+                    <li><a href="#!">Moderator Logs</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+    </nav>
+    <main>
+      <div class="row">
+        <div class="col s12 m11 l9">
+          <h1>Create a Comic Reader!</h1>
+          <p class="flow-text">Start by entering a DeviantArt Favorite, Gallery, or Art URL address.</p>
+          <nav>
+            <div class="nav-wrapper z-depth-2">
+              <form action="/" method="GET">
+                <div class="input-field">
+                  <input id="search-deviantart" type="search" class="search" name="url" placeholder="http://www.deviantart.com/" autocomplete="off">
+                  <label for="search-deviantart"><i class="mdi mdi-deviantart"></i></label>
+                </div>
+              </form>
+            </div>
+          </nav>
+        </div>
+        <div class="col s12">
+          <br>
+          <h2>Featured Readers</h2>
+          <div class="col s12 m6 l3">
+            <div class="card hoverable">
+              <div class="card-image waves-effect waves-block waves-light">
+                <div class="deviant-preview">
+                  <img src="http://orig11.deviantart.net/f43c/f/2013/349/c/c/es__seeds_of_darkness_000___prologue_by_estories-d6s9mp5.png">
+                </div>
+              </div>
+              <div class="card-content">
+                <span class="card-title">Card Title</span>
+                <span class="right">
+                  <i class="fa fa-thumbs-up" aria-hidden="true"></i> 10<br>
+                  <i class="fa fa-thumbs-down" aria-hidden="true"></i> 10<br>
+                  <i class="fa fa-star" aria-hidden="true"></i> 10
+                </span>
+                <p>By <a href="#">EndenDragon</a></p>
+                <p class="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet augue lectus. Fusce malesuada massa arcu, non eleme</p>
+              </div>
+              <div class="card-action">
+                <a class="waves-effect waves-light btn teal accent-4">Read</a>
+                <a class="waves-effect waves-light btn">Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s12">
+          <br>
+          <h2>Last Updated</h2>
+          <div class="col s12 m6 l3">
+            <div class="card hoverable">
+              <div class="card-image waves-effect waves-block waves-light">
+                <div class="deviant-preview">
+                  <img src="http://orig11.deviantart.net/f43c/f/2013/349/c/c/es__seeds_of_darkness_000___prologue_by_estories-d6s9mp5.png">
+                </div>
+              </div>
+              <div class="card-content">
+                <span class="card-title">Card Title</span>
+                <span class="right">
+                  <i class="fa fa-thumbs-up" aria-hidden="true"></i> 10<br>
+                  <i class="fa fa-thumbs-down" aria-hidden="true"></i> 10<br>
+                  <i class="fa fa-star" aria-hidden="true"></i> 10
+                </span>
+                <p>By <a href="#">EndenDragon</a></p>
+                <p class="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet augue lectus. Fusce malesuada massa arcu, non eleme</p>
+              </div>
+              <div class="card-action">
+                <a class="waves-effect waves-light btn teal accent-4">Read</a>
+                <a class="waves-effect waves-light btn">Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="page-footer">
+      <div class="center-align hide-on-med-and-up" style="font-size: 10px;">
+        © 2016 DeviantArt Comic Reader - Made with <i class="fa fa-heart" aria-hidden="true"></i> by EndenDragon <br>
+        <a class="grey-text text-lighten-4" href="#!">Revision 1234 - Terms of Service</a>
+      </div>
+      <div class="footer-copyright hide-on-small-only">
+        <div class="container center-align">
+          © 2016 DeviantArt Comic Reader - Made with <i class="fa fa-heart" aria-hidden="true"></i> by EndenDragon - Revision 1234
+          <a class="grey-text text-lighten-4 right" href="#!">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+    <script>
+      $(".button-collapse").sideNav();
+      $(document).ready(function() {
+          $(window).scroll(function() {
+              /* Hack to make the sidebar scroll with the page */
+              var scrollTop = $(window).scrollTop();
+              var sidenav = $("#slide-out");
+              if (scrollTop != 0) {
+                if (scrollTop > 0 && scrollTop < 64) {
+                  var scrollMargin = 64 - scrollTop;
+                  sidenav.css({"margin-top": scrollMargin.toString() + "px"});
+                } else {
+                  sidenav.css({"margin-top": "0px"});
+                }
+              } else {
+                  sidenav.css({"margin-top": ""});
+              }
+          });
+      });
+    </script>
+  </body>
+</html>
