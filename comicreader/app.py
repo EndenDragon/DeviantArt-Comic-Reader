@@ -28,6 +28,14 @@ app.add_url_rule('/robots.txt', None, app.send_static_file, defaults={'filename'
 def inject_user():
     return global_context_processor()
 
+@app.errorhandler(404)
+def error_404(e):
+    return render_template('404.html.jinja2'), 404
+
+@app.errorhandler(403)
+def error_403(e):
+    return render_template('403.html.jinja2'), 403
+
 @app.route("/logout")
 def logout():
     return redirect(url_for('user.logout'))

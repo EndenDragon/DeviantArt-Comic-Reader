@@ -1,0 +1,16 @@
+{% extends "layout.html.jinja2" %}
+{% block title %}403 Forbidden{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col l9">
+    <h1>403 Forbidden</h1>
+    <p class="flow-text">The resource you are looking for is protected. Maybe it isn't a good idea to look over here....</p>
+    <div class="card-panel teal">
+      <div class="center-align">
+        <a onclick="window.history.back();" class="waves-effect waves-light btn-large teal accent-4">Back</a>
+        <a href="/" class="waves-effect waves-light btn-large">Return Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
