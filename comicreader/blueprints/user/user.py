@@ -41,6 +41,7 @@ def checkUser():
     session['user']['userid'] = response['userid']
     session['user']['username'] = response['username']
     session['user']['loggedIn'] = True
+    session['user']['isModerator'] = usrquery.isModerator()
 
 
 
@@ -79,5 +80,4 @@ def logout():
         session.clear()
     except:
         pass
-    print reason
     return render_template("logout.html.jinja2", reason=reason)

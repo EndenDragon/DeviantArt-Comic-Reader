@@ -21,3 +21,6 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User {0} {1} {2}>'.format(self.id, self.useruuid, self.username)
+
+    def isModerator(self):
+        return self.moderatorbool == 1

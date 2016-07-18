@@ -55,6 +55,7 @@
           </li>
           <li class="{{ "active" if sidebarActive == "browse" }}"><a class="waves-effect" href="#!"><i class="fa fa-folder-open fa-lg" aria-hidden="true"></i> Browse</a></li>
           <li class="{{ "active" if sidebarActive == "favorites" }}"><a class="waves-effect" href="#!"><i class="fa fa-star fa-lg" aria-hidden="true"></i> Favorites</a></li>
+          {% if user.isModerator %}
           <li class="no-padding {{ "active" if sidebarActive == "moderator" }}">
             <ul class="collapsible collapsible-accordion">
               <li>
@@ -71,6 +72,7 @@
               </li>
             </ul>
           </li>
+          {% endif %}
         </ul>
     </nav>
     <main>
