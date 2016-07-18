@@ -10,14 +10,15 @@
     <div class="card-panel teal">
       <nav>
         <div class="nav-wrapper z-depth-2">
-          <form action="/" method="GET">
-            <div class="input-field">
-              <input id="search-deviantart" type="search" class="search" name="url" placeholder="http://www.deviantart.com/" autocomplete="off">
-              <label for="search-deviantart"><i class="mdi mdi-deviantart"></i></label>
-            </div>
-          </form>
+          <div class="input-field">
+            <input id="search-deviantart" type="search" class="search" name="url" placeholder="http://www.deviantart.com/" autocomplete="off">
+            <label for="search-deviantart"><i class="mdi mdi-deviantart"></i></label>
+          </div>
         </div>
       </nav>
+      <div class="progress" id="progressbar" style="opacity: 0;">
+          <div class="indeterminate"></div>
+      </div>
       <br>
       <hr>
 <div class="row" id="sortable">
@@ -44,10 +45,5 @@
 {% block scripts %}
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <script src="/static/vendor/js/jquery.ui.touch-punch.min.js"></script>
-<script>
-$( function() {
-  $( "#sortable" ).sortable();
-  $( "#sortable" ).disableSelection();
-} );
-</script>
+<script src="/static/js/create.js"></script>
 {% endblock %}
