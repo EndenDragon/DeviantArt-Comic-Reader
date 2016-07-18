@@ -16,17 +16,29 @@
   <body>
     <nav>
       <div class="container">
-        <div class="nav-wrapper"><a href="#" class="brand-logo">DeviantArt Comic Reader</a></div>
+        <div class="nav-wrapper"><a href="/" class="brand-logo">DeviantArt Comic Reader</a></div>
       </div>
       <ul class="right">
         <li><a href="#!" class="hide-on-med-and-down waves-effect">Create</a></li>
-        <li><a class="dropdown-button waves-effect waves-light menu-user z-depth-1" href="#!" data-activates="userdropdown">
-          <span class="hide-on-med-and-down">EndenDragon&nbsp;&nbsp;&nbsp;</span><img src="{{ url_for('static', filename='img/enden.png') }}" alt="usericon" class="circle z-depth-1"></a></li>
+        <li>
+          <a class="dropdown-button waves-effect waves-light menu-user z-depth-1" href="#!" data-activates="userdropdown">
+          {% if user.loggedIn %}
+          <span class="hide-on-med-and-down">{{ user.username }}&nbsp;&nbsp;&nbsp;</span><img src="{{ user.usericon }}" alt="usericon" class="circle z-depth-1">
+          {% else %}
+          <span>Comical User</span>
+          {% endif %}
+          </a>
+        </li>
       </ul>
       <ul id='userdropdown' class='dropdown-content'>
+        {% if user.loggedIn %}
         <li><a href="#!">Your Readers</a></li>
         <li><a href="#!">Settings</a></li>
-        <li><a href="#!">Logout</a></li>
+        <li><a href="/user/logout">Logout</a></li>
+        {% else %}
+        <hr style="opacity: 0;">
+        <li><a href="/user/login">Login</a></li>
+        {% endif %}
       </ul>
       <a href="#" data-activates="slide-out" class="button-collapse show-on-med-and-up"><i class="material-icons">menu</i></a>
        <ul id="slide-out" class="side-nav fixed">
@@ -41,9 +53,9 @@
               </form>
             </div>
           </li>
-          <li class="active"><a class="waves-effect" href="#!"><i class="fa fa-folder-open fa-lg" aria-hidden="true"></i> Browse</a></li>
-          <li><a class="waves-effect" href="#!"><i class="fa fa-star fa-lg" aria-hidden="true"></i> Favorites</a></li>
-          <li class="no-padding">
+          <li class="{{ "active" if sidebarActive == "browse" }}"><a class="waves-effect" href="#!"><i class="fa fa-folder-open fa-lg" aria-hidden="true"></i> Browse</a></li>
+          <li class="{{ "active" if sidebarActive == "favorites" }}"><a class="waves-effect" href="#!"><i class="fa fa-star fa-lg" aria-hidden="true"></i> Favorites</a></li>
+          <li class="no-padding {{ "active" if sidebarActive == "moderator" }}">
             <ul class="collapsible collapsible-accordion">
               <li>
                 <a class="collapsible-header waves-effect"><i class="fa fa-flag fa-lg" aria-hidden="true"></i> Moderator</a>
@@ -99,5 +111,6 @@
           });
       });
     </script>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

@@ -27,7 +27,6 @@ def checkUser():
             if usrquery.username != response['username']:
                 usrquery.username = response['username']
             db.session.commit()
-    session['userid'] = response['userid']
     timestamp = time.time()
     timestamp = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
     try:
@@ -37,10 +36,20 @@ def checkUser():
     login = LoginTimestamp(usrquery.id, response['username'], ipaddress, timestamp)
     db.session.add(login)
     db.session.commit()
+    session['user'] = {}
+    session['user']['usericon'] = response['usericon']
+    session['user']['userid'] = response['userid']
+    session['user']['username'] = response['username']
+    session['user']['loggedIn'] = True
 
 
-@user.route('/login')
+
+@user.route('/login', methods=['GET'])
 def login():
+    return render_template("login.html.jinja2")
+
+@user.route('/login', methods=['POST'])
+def login_post():
     callback=url_for('user.authorized', _external=True)
     return deviantart.authorize(callback=callback)
 
@@ -70,6 +79,5 @@ def logout():
         session.clear()
     except:
         pass
-    if reason is not None:
-        return "Logged out: " + reason
-    return "Logged out"
+    print reason
+    return render_template("logout.html.jinja2", reason=reason)

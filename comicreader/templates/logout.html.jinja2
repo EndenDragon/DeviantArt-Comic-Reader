@@ -1,0 +1,26 @@
+{% extends "layout.html.jinja2" %}
+{% block title %}Logout{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col l9">
+    <h1>Logout</h1>
+    {% if reason is not none %}
+        <p class="flow-text">You have been logged out of DeviantArt Comic Reader.</p>
+    {% else %}
+        <p class="flow-text">You have logged out of DeviantArt Comic Reader successfully!</p>
+    {% endif %}
+    <div class="card-panel teal">
+      <div class="center-align">
+        {% if reason is not none %}
+            {{ reason }} <br>
+        {% endif %}
+        <a href="/user/login" class="waves-effect waves-light btn-large teal accent-4">Login</a>
+        <a href="/" class="waves-effect waves-light btn-large">Return Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}

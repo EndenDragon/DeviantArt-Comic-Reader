@@ -8,6 +8,13 @@ def get_headers():
     access_token = access_token[0]
     return {'Authorization': 'OAuth '+access_token, 'user-agent': config['USER_AGENT']}
 
+def global_context_processor():
+    try:
+        return dict(user=session['user'])
+    except:
+        u = {'loggedIn': False}
+        return dict(user=u)
+
 def login_required(api=False):
     def decorator(f):
         @wraps(f)
