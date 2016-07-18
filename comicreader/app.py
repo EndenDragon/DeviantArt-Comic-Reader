@@ -3,6 +3,7 @@ from config import config
 from comicreader.decorators import global_context_processor
 import blueprints.fetch
 import blueprints.user
+import blueprints.reader
 from database import db
 import os
 import time
@@ -21,6 +22,7 @@ db.init_app(app)
 
 app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch", template_folder="/templates")
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
+app.register_blueprint(blueprints.reader.reader, url_prefix="/reader", template_folder="/templates")
 
 app.add_url_rule('/robots.txt', None, app.send_static_file, defaults={'filename': 'txt/robots.txt'})
 
@@ -48,7 +50,7 @@ def login():
 def index():
     return render_template("index.html.jinja2", sidebarActive="browse")
 
-@app.route("/session")
+@app.route("/session") #temporary
 def sessions():
     sess = str(session)
     return jsonify(s=sess)
