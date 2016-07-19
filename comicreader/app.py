@@ -4,6 +4,7 @@ from comicreader.decorators import global_context_processor
 import blueprints.fetch
 import blueprints.user
 import blueprints.reader
+import blueprints.database
 from database import db
 import os
 import time
@@ -23,6 +24,7 @@ db.init_app(app)
 app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch", template_folder="/templates")
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
 app.register_blueprint(blueprints.reader.reader, url_prefix="/reader", template_folder="/templates")
+app.register_blueprint(blueprints.database.database, url_prefix="/database", template_folder="/templates")
 
 app.add_url_rule('/robots.txt', None, app.send_static_file, defaults={'filename': 'txt/robots.txt'})
 

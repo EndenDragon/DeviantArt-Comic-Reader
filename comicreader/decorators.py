@@ -37,7 +37,7 @@ def login_required(api=False):
                 else:
                     return redirect(url_for('user.logout', reason=msg))
             if req.status_code == 401:
-                msg = "Access denined to DeviantArt API"
+                msg = "Access denined to DeviantArt API (Try logging into DeviantArt again...)"
                 if api:
                     return jsonify(error=True, message=msg)
                 else:

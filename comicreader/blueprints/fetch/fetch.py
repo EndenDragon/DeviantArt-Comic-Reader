@@ -50,16 +50,11 @@ def gallery():
         req = requests.get('https://www.deviantart.com/api/v1/oauth2/gallery/{}'.format(fid), params=parameters, headers=headers)
         response = req.content
         has_more = json.loads(response)['has_more']
+        results = results + json.loads(response)['results']
         if has_more:
-            folderName = json.loads(response)['name']
-            results = results + json.loads(response)['results']
             offset = json.loads(response)['next_offset']
             print offset
-    try:
-      folderName
-    except NameError:
-      folderName = None
-    return jsonify(error=False,name=folderName,gallery=results)
+    return jsonify(error=False,favorite=results)
 
 @fetch.route("/art")
 @login_required(api=True)
@@ -67,7 +62,7 @@ def art():
     headers = get_headers()
     uuid = request.args.get('deviationid')
     if uuid is None:
-        return jsonify(error=True)
+        return jsonify(error=True,message="Invalid Deviation ID")
     req = requests.get('https://www.deviantart.com/api/v1/oauth2/deviation/{}'.format(uuid), headers=headers)
     response = req.content
     return jsonify(error=False,art=json.loads(response))
@@ -81,10 +76,19 @@ def favorite():
     mature = request.args.get('mature', False)
     if uuid and usr is None:
         return jsonify(error=True)
-    parameters = {'username': usr, 'mature_content': mature}
-    req = requests.get('https://www.deviantart.com/api/v1/oauth2/collections/{}'.format(uuid),params=parameters, headers=headers)
-    response = req.content
-    return jsonify(error=False,favorite=json.loads(response))
+    results = []
+    has_more = True
+    offset = 0
+    while has_more:
+        parameters = {'username': usr, 'offset': offset, 'mature_content': mature}
+        req = requests.get('https://www.deviantart.com/api/v1/oauth2/collections/{}'.format(uuid),params=parameters, headers=headers)
+        response = req.content
+        has_more = json.loads(response)['has_more']
+        results = results + json.loads(response)['results']
+        if has_more:
+            offset = json.loads(response)['next_offset']
+            print offset
+    return jsonify(error=False,favorite=results)
 
 @fetch.route("/whoami")
 @login_required(api=True)

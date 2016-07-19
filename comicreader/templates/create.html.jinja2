@@ -11,7 +11,7 @@
       <nav>
         <div class="nav-wrapper z-depth-2">
           <div class="input-field">
-            <input id="search-deviantart" type="search" class="search" name="url" placeholder="http://www.deviantart.com/" autocomplete="off">
+            <input id="search-deviantart" type="search" class="search" name="url" placeholder="http://www.deviantart.com/" autocomplete="off" title="Please note, the browser might hang when uploading a large favorite/gallery.">
             <label for="search-deviantart"><i class="mdi mdi-deviantart"></i></label>
           </div>
         </div>
@@ -22,25 +22,32 @@
       <br>
       <hr>
 <div class="row" id="sortable">
-  {% for x in range(1, 20) %}
-<div class="col s12 m6 l2 ui-state-default">
-      <div class="card hoverable">
-        <div class="card-image waves-effect waves-block waves-light">
-          <div class="deviant-preview">
-            <img src="http://orig11.deviantart.net/f43c/f/2013/349/c/c/es__seeds_of_darkness_000___prologue_by_estories-d6s9mp5.png">
-          </div>
-        </div>
-        <div class="card-content">
-          <span class="card-title-small truncate"><a href="#" title="I am hovering over the text">{{ x }}</a></span>
-          <p>By <a href="#">EndenDragon</a></p>
-        </div>
-      </div>
-</div>
-{% endfor %}
+
+
 </div>
     </div>
   </div>
 </div>
+
+
+<script id="hidden-template" type="text/x-custom-template">
+{% raw %}
+    <div class="col s12 m6 l2 ui-state-default" imageid="{{id}}">
+          <div class="card hoverable">
+            <div class="card-image waves-effect waves-block waves-light">
+              <div class="deviant-preview">
+                <img src="{{src}}">
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-title-small truncate"><a href="{{url}}" title="{{title}}" target="_blank">{{title}}</a></span>
+              <p>By <a href="//{{author}}.deviantart.com" target="_blank">{{author}}</a></p>
+            </div>
+          </div>
+    </div>
+{% endraw %}
+</script>
+
 {% endblock %}
 {% block scripts %}
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>

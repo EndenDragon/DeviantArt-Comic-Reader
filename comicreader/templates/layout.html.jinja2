@@ -19,7 +19,7 @@
         <div class="nav-wrapper"><a href="/" class="brand-logo">DeviantArt Comic Reader</a></div>
       </div>
       <ul class="right">
-        <li><a href="#!" class="hide-on-med-and-down waves-effect">Create</a></li>
+        <li><a href="/reader/create" class="hide-on-med-and-down waves-effect">Create</a></li>
         <li>
           <a class="dropdown-button waves-effect waves-light menu-user z-depth-1" href="#!" data-activates="userdropdown">
           {% if user.loggedIn %}
@@ -92,8 +92,8 @@
     </footer>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="{{ url_for('static', filename='vendor/js/materialize.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.js"></script>
     <script>
       $(".button-collapse").sideNav();
       $(document).ready(function() {
