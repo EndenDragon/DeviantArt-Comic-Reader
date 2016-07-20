@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, session, jsonify, session
 from config import config
 from comicreader.decorators import global_context_processor
+from comicreader.cache import cache
 import blueprints.fetch
 import blueprints.user
 import blueprints.reader
@@ -19,7 +20,9 @@ app.secret_key = config['SECRET_KEY']
 os.environ['TZ'] = 'UTC' # Sets the whole app to handle UTC instead of the server time
 time.tzset()
 
+
 db.init_app(app)
+cache.init_app(app, config={'CACHE_TYPE': 'memcached'})
 
 app.register_blueprint(blueprints.fetch.fetch, url_prefix="/fetch", template_folder="/templates")
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")

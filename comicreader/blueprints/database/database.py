@@ -4,6 +4,12 @@ import time
 
 database = Blueprint("database", __name__, template_folder="../../templates")
 
+@database.after_request
+def add_header(response):
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=120'
+    return response
+
 @database.route("/deviationusers", methods=['GET'])
 def deviationusers():
     method = request.args.get("method", "INVALID")

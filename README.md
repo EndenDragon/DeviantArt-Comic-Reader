@@ -16,3 +16,5 @@ This is the source to the DeviantArt Comic Reader. The project aim is to simplif
 * requests `pip install requests`
 * Beautiful Soup 4 `pip install beautifulsoup4`
 * tldextract `pip install tldextract`
+* FlaskCache `pip install Flask-Cache`
+* python-memcached `pip install python-memcached`

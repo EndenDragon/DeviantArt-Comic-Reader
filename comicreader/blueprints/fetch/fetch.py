@@ -1,5 +1,6 @@
 from flask import Blueprint, url_for, session, jsonify, request
 from comicreader.decorators import login_required, get_headers
+from comicreader.cache import cache, make_cache_key
 from urlparse import urlparse
 from bs4 import BeautifulSoup
 import json
@@ -8,7 +9,14 @@ import requests
 
 fetch = Blueprint("fetch", __name__, template_folder="../../templates")
 
+@fetch.after_request
+def add_header(response):
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=120'
+    return response
+
 @fetch.route("/url")
+@cache.cached(timeout=50, key_prefix=make_cache_key)
 def url():
     address = request.args.get("address")
     if address == None:
@@ -34,6 +42,7 @@ def url():
     return jsonify(is_valid_url=True,type=contenttype,username=path[0],uuid=path[1])
 
 @fetch.route("/gallery")
+@cache.cached(timeout=50, key_prefix=make_cache_key)
 @login_required(api=True)
 def gallery():
     headers = get_headers()
@@ -57,6 +66,7 @@ def gallery():
     return jsonify(error=False,favorite=results)
 
 @fetch.route("/art")
+@cache.cached(timeout=50, key_prefix=make_cache_key)
 @login_required(api=True)
 def art():
     headers = get_headers()
@@ -68,6 +78,7 @@ def art():
     return jsonify(error=False,art=json.loads(response))
 
 @fetch.route("/favorite")
+@cache.cached(timeout=50, key_prefix=make_cache_key)
 @login_required(api=True)
 def favorite():
     headers = get_headers()
