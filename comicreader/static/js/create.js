@@ -81,6 +81,7 @@ function fetchArt(uuid) {
         }
         userid = userIdOperation(json['art']['author']['userid'], json['art']['author']['username'], json['art']['author']['usericon'])
         artOperation(json['art'], userid)
+        getArtList()
       },
       error: function() {
         Materialize.toast('An error has occured while fetching art URL!', 4000)
@@ -105,6 +106,7 @@ function fetchFavorites(uuid, username) {
           userid = userIdOperation(arrjson['author']['userid'], arrjson['author']['username'], arrjson['author']['usericon'])
           artOperation(arrjson, userid)
         }
+        getArtList()
       },
       error: function() {
         Materialize.toast('An error has occured while fetching art URL!', 4000)
@@ -129,6 +131,7 @@ function fetchGallery(uuid, username) {
           userid = userIdOperation(arrjson['author']['userid'], arrjson['author']['username'], arrjson['author']['usericon'])
           artOperation(arrjson, userid)
         }
+        getArtList()
       },
       error: function() {
         Materialize.toast('An error has occured while fetching art URL!', 4000)
@@ -275,4 +278,15 @@ function insertArt(id, art) {
   var template = $('#hidden-template').html();
   var html = Mustache.to_html(template, data);
   $('#sortable').append(html);
+}
+
+function getArtList() {
+  var imgid = [];
+  $('#sortable').find('div').each(function(){
+          iid = $(this).attr("imageid");
+          if(typeof iid !== "undefined") {
+            imgid.push(iid)
+          }
+  });
+  console.log(imgid);
 }
